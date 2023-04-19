@@ -46,7 +46,7 @@ txt_idade.insert(0, "Idade")
 Label(tela, text="Sexo:").place(x=130, y=200)
 
 sexo = StringVar()
-sexo.set("M")
+sexo.set("m")
 
 rdb_buttonm = Radiobutton(tela, text="M", variable="var", value="m")
 rdb_buttonf = Radiobutton(tela, text="F", variable="var", value="f")
