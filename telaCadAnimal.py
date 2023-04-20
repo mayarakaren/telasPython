@@ -4,13 +4,14 @@ from tkinter import filedialog
 from PIL import Image, ImageTk
 from tkinter import ttk
 import tkinter as tk
+import io
+import pymongo
 
 #Configuração da tela-----------------------------------------------------------------------------------------------------
 
 tela = Tk()
 tela.title("Gestão dos Donos")
-var = StringVar()
-var.set("M")
+
 
 tela.geometry("750x500")
 tela.resizable(True, True)
@@ -134,6 +135,11 @@ def escolher_imagem():
     lbl_imagem.image= imagem_tk
     lbl_imagem.place(x=10, y=50)
 
+    imagem_byte_arr = io.BytesIO()
+    imagem_pil.save(imagem_byte_arr, format='JPEG')
+    imagem_byte_arr = imagem_byte_arr.getvalue()
+    collection.insert_one({"image": imagem_byte_arr})
+
 #Botões-----------------------------------------------------------------------------------------------------
 
 btn_escolher = Button(tela, text="Escolher imagem", command=escolher_imagem, bg="#90EE90")
@@ -147,12 +153,60 @@ foto_alterar = PhotoImage(file=r"img\edit.png")
 foto_consultar = PhotoImage(file=r"img\search.png")
 foto_sair = PhotoImage(file=r"img\logout.png")
 
+#Banco-----------------------------------------------------------------------------------------------------
+
+# Conectando com o banco de dados
+petshop = pymongo.MongoClient("mongodb://localhost:27017/")
+db = petshop["petshop"]
+collection = db["animais"]
+
+# Criando as funções do CRUD
+def create():
+    codigo = txt_codigo.get()
+    nome = txt_nome.get()
+    idade = int(txt_idade.get())
+    sexy = sexo.get()
+    raca = txt_raca.get()
+    peso = txt_peso.get()
+    especie = comboEspecie.get()
+    data = txt_data.get()
+    cad = txt_cad.get() 
+    at = txt_at.get()
+    desc = text_area.get("1.0", END)
+
+    animais = {"código": codigo, "nome": nome, "idade": idade, "sexo": sexy, "raça": raca, "peso": peso, "espécie": especie, "data de nascimento": data, "data de cadastro": cad, "data de atualização" : at, "descrição": desc}
+    collection.insert_one(animais)
+
+def read():
+    animal = []
+    for animais in collection.find():
+        animal.append(animais)
+    print(animal)
+
+def update():
+    codigo = txt_codigo.get()
+    nome = txt_nome.get()
+    idade = int(txt_idade.get())
+    sexy = sexo.get()
+    raca = txt_raca.get()
+    peso = txt_peso.get()
+    especie = comboEspecie.get()
+    data = txt_data.get()
+    cad = txt_cad.get() 
+    at = txt_at.get()
+    desc = text_area.get()
+    collection.update_one({"código": codigo}, {"$set": {"código": codigo, "nome": nome, "idade": idade, "sexo": sexy, "raça": raca, "peso": peso, "espécie": especie, "data de nascimento": data, "data de cadastro": cad, "data de atualização" : at, "descrição": desc}})
+
+def delete():
+    codigo = txt_codigo.get()
+    collection.delete_one({"código": codigo})
+
 #Botões-----------------------------------------------------------------------------------------------------
 
-btn_salvar = Button(tela, text="Salvar", image= foto_salvar, compound= TOP, bg="#90EE90").place(x=130, y=410)
-btn_alterar = Button(tela, text="Alterar", image= foto_alterar, compound= TOP, bg="#6495ED").place(x=200, y=410)
-btn_consultar = Button(tela, text="Consultar", image= foto_consultar, compound= TOP, bg="#F0E68C").place(x=270, y=410)
-btn_excluir = Button(tela, text="Excluir", image= foto_excluir, compound= TOP, bg="#FF6347").place(x=340, y=410)
+btn_salvar = Button(tela, text="Salvar", image= foto_salvar, compound= TOP, bg="#90EE90", command=create).place(x=130, y=410)
+btn_alterar = Button(tela, text="Alterar", image= foto_alterar, compound= TOP, bg="#6495ED", command=update).place(x=200, y=410)
+btn_consultar = Button(tela, text="Consultar", image= foto_consultar, compound= TOP, bg="#F0E68C", command=read).place(x=270, y=410)
+btn_excluir = Button(tela, text="Excluir", image= foto_excluir, compound= TOP, bg="#FF6347", command=delete).place(x=340, y=410)
 btn_sair = Button(tela, text="Sair", image= foto_sair, compound= RIGHT, bg="#000000", fg="white", height=40, width=70, anchor="center", command=tela.quit).place(x=620, y=440)
 
 tela.mainloop()

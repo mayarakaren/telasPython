@@ -4,6 +4,7 @@ from tkinter import filedialog
 from PIL import Image, ImageTk
 from tkinter import ttk
 import tkinter as tk
+import pymongo
 
 #Configuração da tela-----------------------------------------------------------------------------------------------------
 
