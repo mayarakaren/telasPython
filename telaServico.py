@@ -36,9 +36,14 @@ collection = db["servicos"]
 
 # Criando as funções do CRUD
 def create():
+    codigo = txt_codigo.get()
+    nome = txt_nome.get()
+    tipo = comboservico.get()
+    valor = txt_valor.get()
+    tempo = txt_tempo.get()
+    desc = text_area.get("1.0", END)
 
-
-    servicos = {}
+    servicos = {"código": codigo, "nome": nome, "serviço": tipo, "valor": valor, "tempo de duração": tempo, "descrição": desc}
     collection.insert_one(servicos)
 
 def read():
@@ -48,12 +53,100 @@ def read():
     print(servicos)
 
 def update():
+    codigo = txt_codigo.get()
+    nome = txt_nome.get()
+    tipo = comboservico.get()
+    valor = txt_valor.get()
+    tempo = txt_tempo.get()
+    desc = text_area.get("1.0", END)
 
-    collection.update_one({"código":codigo}, {"$set": {}})
+    collection.update_one({"código":codigo}, {"$set": {"código": codigo, "nome": nome, "serviço": tipo, "valor": valor, "tempo de duração": tempo, "descrição": desc}})
 
 def delete():
     codigo = txt_codigo.get()
     collection.delete_one({"código": codigo})
+
+
+#Código-----------------------------------------------------------------------------------------------------
+lbl_codigo = Label(tela, text="Código:", bg="#ffffff").place(x=130, y=140)
+txt_codigo = Entry(tela, width=20, borderwidth=2, fg="black", bg="white")
+txt_codigo.place(x=190, y=140)
+txt_codigo.insert(0, "Código")
+
+#Nome-----------------------------------------------------------------------------------------------------
+lbl_nome = Label(tela, text="Nome:", bg="#ffffff").place(x=130, y=170)
+txt_nome = Entry(tela, width=40, borderwidth=2, fg="black", bg="white")
+txt_nome.place(x=190, y=170)
+txt_nome.insert(0, "Digite o nome")
+
+#Serviços estéticos: banhos, hidratação, tosa na máquina, tosa na tesoura, tosa higiênica, desembaraçamento, tingimento #dos pelos, escovação de dentes, limpeza de ouvido e corte de unhas.
+#Bem estar: dog walker/passeador, prática de esportes guiada como natação e corridas, ioga, acupuntura e fitoterápicos 
+#(sessões de relaxamento).
+#Serviços Médicos: consultas clínicas gerais e especialidades, atendimento domiciliar, vacinação, preventivos e cirurgias.
+#Educação: adestramento e hospedagem (aprendizagem de convívio com outros animais).
+
+#Tipo de Serviço-----------------------------------------------------------------------------------------------------
+
+lbl_servico = Label(tela, text="Estado:", bg="#ffffff").place(x=130, y=200)
+comboservico = ttk.Combobox(tela, 
+                            values=[
+                                    "Serviços Estéticos", 
+                                    "Bem-Estar",
+                                    "Serviços Médicos",
+                                    "Educação"],)
+
+comboservico.grid(column=0, row=1)
+comboservico.place(x=190 , y=200)
+
+#Valor-----------------------------------------------------------------------------------------------------
+lbl_valor = Label(tela, text="Valor:", bg="#ffffff").place(x=130, y=230)
+txt_valor = Entry(tela, width=40, borderwidth=2, fg="black", bg="white")
+txt_valor.place(x=190, y=230)
+txt_valor.insert(0, "valor")
+
+#Tempo de duração-----------------------------------------------------------------------------------------------------
+lbl_tempo = Label(tela, text="Tempo de Duração:", bg="#ffffff").place(x=130, y=260)
+txt_tempo = Entry(tela, width=40, borderwidth=2, fg="black", bg="white")
+txt_tempo.place(x=240, y=260)
+txt_tempo.insert(0, "")
+
+#Descrição-----------------------------------------------------------------------------------------------------
+
+lbl_desc = Label(tela, text="Descrição:", bg="#ffffff").place(x=130, y=290)
+text_area = tk.Text(tela, height=5, width=45, font=('Arial', 12),
+                    fg='black', bg='white')
+text_area.pack()
+text_area.place(x=190, y=290)
+
+#Imagem-----------------------------------------------------------------------------------------------------
+
+pasta_inicial = PhotoImage(file = r"")
+
+def escolher_imagem():
+
+    caminho_imagem = filedialog.askopenfilename(initialdir=pasta_inicial, title="Escolha uma imagem",
+                                                filetypes=(("Arquivos de imagem", "*.jpg; *.jpeg; *.png"),
+                                                           ("Todos os arquivos", "*.*")))
+    imagem_pil = Image.open(caminho_imagem)
+    largura, altura = imagem_pil.size
+    if largura > 150:
+        proporcao = largura / 150
+        nova_altura = int(altura / proporcao)
+        imagem_pil = imagem_pil.resize((110, nova_altura))
+    imagem_tk = ImageTk.PhotoImage(imagem_pil)
+    lbl_imagem = Label(tela, image=imagem_tk)
+    lbl_imagem.image= imagem_tk
+    lbl_imagem.place(x=10, y=50)
+
+    imagem_byte_arr = io.BytesIO()
+    imagem_pil.save(imagem_byte_arr, format='JPEG')
+    imagem_byte_arr = imagem_byte_arr.getvalue()
+    collection.insert_one({"image": imagem_byte_arr})
+
+#Botões-----------------------------------------------------------------------------------------------------
+
+btn_escolher = Button(tela, text="Escolher imagem", command=escolher_imagem, bg="#90EE90")
+btn_escolher.place(x=10, y=200)
 
 #Ícones-----------------------------------------------------------------------------------------------------
 
