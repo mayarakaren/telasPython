@@ -5,6 +5,7 @@ from PIL import Image, ImageTk
 from tkinter import ttk
 import tkinter as tk
 import pymongo
+import io
 
 #Configuração da tela-----------------------------------------------------------------------------------------------------
 
@@ -96,17 +97,17 @@ comboestado.place(x=180 , y=230)
 
 #Bairro-----------------------------------------------------------------------------------------------------
 
-lbl_at = Label(tela, text="Bairro:", bg="#ffffff").place(x= 330, y= 230)
-txt_at = Entry(tela, width=20, borderwidth=2, fg="black", bg="white")
-txt_at.place(x= 370, y=230)
-txt_at.insert(0, " ")
+lbl_bairro = Label(tela, text="Bairro:", bg="#ffffff").place(x= 330, y= 230)
+txt_bairro = Entry(tela, width=20, borderwidth=2, fg="black", bg="white")
+txt_bairro.place(x= 370, y=230)
+txt_bairro.insert(0, " ")
 
 #Cidade-----------------------------------------------------------------------------------------------------
 
-lbl_at = Label(tela, text="Cidade:", bg="#ffffff").place(x= 500, y= 230)
-txt_at = Entry(tela, width=20, borderwidth=2, fg="black", bg="white")
-txt_at.place(x= 550, y=230)
-txt_at.insert(0, " ")
+lbl_cidade = Label(tela, text="Cidade:", bg="#ffffff").place(x= 500, y= 230)
+txt_cidade = Entry(tela, width=20, borderwidth=2, fg="black", bg="white")
+txt_cidade.place(x= 550, y=230)
+txt_cidade.insert(0, " ")
 
 #Data de nascimento-----------------------------------------------------------------------------------------------------
 
@@ -150,6 +151,37 @@ def escolher_imagem():
     lbl_imagem = Label(tela, image=imagem_tk)
     lbl_imagem.image= imagem_tk
     lbl_imagem.place(x=10, y=50)
+
+    imagem_byte_arr = io.BytesIO()
+    imagem_pil.save(imagem_byte_arr, format='JPEG')
+    imagem_byte_arr = imagem_byte_arr.getvalue()
+    collection.insert_one({"image": imagem_byte_arr})
+
+#Banco-----------------------------------------------------------------------------------------------------
+
+# Conectando com o banco de dados
+petshop = pymongo.MongoClient("mongodb://localhost:27017/")
+db = petshop["petshop"]
+collection = db["animais"]
+
+# Criando as funções do CRUD
+def create():
+    codigo = txt_codigo.get()
+    nome = txt_nome.get()
+    idade = int(txt_idade.get())
+    sexy = sexo.get()
+    celular = txt_cel.get()
+    end = txt_end.get()
+    cpf = txt_cpf.get()
+    data = txt_data.get()
+    cad = txt_cad.get() 
+    bairro = txt_bairro.get()
+    cidade = txt_cidade.get()
+    estado = comboestado.get()
+    desc = text_area.get("1.0", END)
+
+    cliente = {}
+    collection.insert_one(cliente)
 
 #Botões-----------------------------------------------------------------------------------------------------
 
