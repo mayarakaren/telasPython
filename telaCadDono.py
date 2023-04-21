@@ -11,8 +11,6 @@ import io
 
 tela = Tk()
 tela.title("Gestão dos Donos")
-var = StringVar()
-var.set("M")
 
 tela.geometry("750x500")
 tela.resizable(True, True)
@@ -162,7 +160,7 @@ def escolher_imagem():
 # Conectando com o banco de dados
 petshop = pymongo.MongoClient("mongodb://localhost:27017/")
 db = petshop["petshop"]
-collection = db["animais"]
+collection = db["clientes"]
 
 # Criando as funções do CRUD
 def create():
@@ -180,8 +178,34 @@ def create():
     estado = comboestado.get()
     desc = text_area.get("1.0", END)
 
-    cliente = {}
+    cliente = {"código":codigo, "nome": nome, "idade":idade, "sexo": sexy, "celular": celular, "endereço": end, "cpf":cpf, "data_nasc":data, "data_cad":cad, "bairro":bairro, "cidade":cidade, "estado": estado, "descrição": desc}
     collection.insert_one(cliente)
+
+def read():
+    clientes = []
+    for cliente in collection.find():
+        clientes.append(cliente)
+    print(clientes)
+
+def update():
+    codigo = txt_codigo.get()
+    nome = txt_nome.get()
+    idade = int(txt_idade.get())
+    sexy = sexo.get()
+    celular = txt_cel.get()
+    end = txt_end.get()
+    cpf = txt_cpf.get()
+    data = txt_data.get()
+    cad = txt_cad.get() 
+    bairro = txt_bairro.get()
+    cidade = txt_cidade.get()
+    estado = comboestado.get()
+    desc = text_area.get()
+    collection.update_one({"código":codigo}, {"$set": {"código":codigo, "nome": nome, "idade":idade, "sexo": sexy, "celular": celular, "endereço": end, "cpf":cpf, "data_nasc":data, "data_cad":cad, "bairro":bairro, "cidade":cidade, "estado": estado, "descrição": desc}})
+
+def delete():
+    codigo = txt_codigo.get()
+    collection.delete_one({"código": codigo})
 
 #Botões-----------------------------------------------------------------------------------------------------
 
@@ -198,10 +222,10 @@ foto_sair = PhotoImage(file=r"img\logout.png")
 
 #Botões-----------------------------------------------------------------------------------------------------
 
-btn_salvar = Button(tela, text="Salvar", image= foto_salvar, compound= TOP, bg="#90EE90").place(x=130, y=410)
-btn_alterar = Button(tela, text="Alterar", image= foto_alterar, compound= TOP, bg="#6495ED").place(x=200, y=410)
-btn_consultar = Button(tela, text="Consultar", image= foto_consultar, compound= TOP, bg="#F0E68C").place(x=270, y=410)
-btn_excluir = Button(tela, text="Excluir", image= foto_excluir, compound= TOP, bg="#FF6347").place(x=340, y=410)
+btn_salvar = Button(tela, text="Salvar", image= foto_salvar, compound= TOP, bg="#90EE90",command=create).place(x=130, y=410)
+btn_alterar = Button(tela, text="Alterar", image= foto_alterar, compound= TOP, bg="#6495ED", command=update).place(x=200, y=410)
+btn_consultar = Button(tela, text="Consultar", image= foto_consultar, compound= TOP, bg="#F0E68C", command=read).place(x=270, y=410)
+btn_excluir = Button(tela, text="Excluir", image= foto_excluir, compound= TOP, bg="#FF6347", command=delete).place(x=340, y=410)
 btn_sair = Button(tela, text="Sair", image= foto_sair, compound= RIGHT, bg="#000000", fg="white", height=40, width=70, anchor="center", command=tela.quit).place(x=620, y=440)
 
 tela.mainloop()
