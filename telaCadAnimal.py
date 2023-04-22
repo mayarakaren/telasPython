@@ -6,6 +6,7 @@ from tkinter import ttk
 import tkinter as tk
 import io
 import pymongo
+import subprocess
 
 #Configuração da tela-----------------------------------------------------------------------------------------------------
 
@@ -201,11 +202,14 @@ def delete():
     codigo = txt_codigo.get()
     collection.delete_one({"código": codigo})
 
+def abrir_consultaAnimais():
+    subprocess.run(["python", "telaConsultaAnimais.py"])
+
 #Botões-----------------------------------------------------------------------------------------------------
 
 btn_salvar = Button(tela, text="Salvar", image= foto_salvar, compound= TOP, bg="#90EE90", command=create).place(x=130, y=410)
 btn_alterar = Button(tela, text="Alterar", image= foto_alterar, compound= TOP, bg="#6495ED", command=update).place(x=200, y=410)
-btn_consultar = Button(tela, text="Consultar", image= foto_consultar, compound= TOP, bg="#F0E68C", command=read).place(x=270, y=410)
+btn_consultar = Button(tela, text="Consultar", image= foto_consultar, compound= TOP, bg="#F0E68C", command=abrir_consultaAnimais).place(x=270, y=410)
 btn_excluir = Button(tela, text="Excluir", image= foto_excluir, compound= TOP, bg="#FF6347", command=delete).place(x=340, y=410)
 btn_sair = Button(tela, text="Sair", image= foto_sair, compound= RIGHT, bg="#000000", fg="white", height=40, width=70, anchor="center", command=tela.quit).place(x=620, y=440)
 
