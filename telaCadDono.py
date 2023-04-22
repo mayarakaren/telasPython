@@ -179,6 +179,20 @@ def create():
     estado = comboestado.get()
     desc = text_area.get("1.0", END)
 
+    txt_codigo.delete(0, tk.END)
+    txt_nome.delete(0, tk.END)
+    txt_idade.delete(0, tk.END)
+    txt_cel.delete(0, tk.END)
+    txt_end.delete(0, tk.END)
+    txt_bairro.delete(0, tk.END)
+    txt_cidade.delete(0, tk.END)
+    comboestado.set("")
+    txt_data.delete(0, tk.END)
+    txt_cad.delete(0, tk.END)
+    txt_cpf.delete(0, tk.END)
+    text_area.delete('1.0', tk.END)
+    sexo.set("")
+
     cliente = {"código":codigo, "nome": nome, "idade":idade, "sexo": sexy, "celular": celular, "endereço": end, "cpf":cpf, "data_nasc":data, "data_cad":cad, "bairro":bairro, "cidade":cidade, "estado": estado, "descrição": desc}
     collection.insert_one(cliente)
 

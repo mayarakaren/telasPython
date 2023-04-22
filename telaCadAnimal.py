@@ -55,8 +55,8 @@ Label(tela, text="Sexo:", bg="#ffffff").place(x=130, y=200)
 sexo = StringVar()
 sexo.set("m")
 
-rdb_buttonm = Radiobutton(tela, text="M", variable="var", value="m", bg="#ffffff")
-rdb_buttonf = Radiobutton(tela, text="F", variable="var", value="f", bg="#ffffff")
+rdb_buttonm = Radiobutton(tela, text="M", variable="var_radio", value="m", bg="#ffffff")
+rdb_buttonf = Radiobutton(tela, text="F", variable="var_radio", value="f", bg="#ffffff")
 rdb_buttonm.place(x=165 , y=200)
 rdb_buttonf.place(x=200 , y=200)
 
@@ -175,6 +175,18 @@ def create():
     at = txt_at.get()
     desc = text_area.get("1.0", END)
 
+    txt_codigo.delete(0, tk.END)
+    txt_nome.delete(0, tk.END)
+    txt_idade.delete(0, tk.END)
+    txt_raca.delete(0, tk.END)
+    txt_peso.delete(0, tk.END)
+    comboEspecie.set("")
+    txt_data.delete(0, tk.END)
+    txt_cad.delete(0, tk.END)
+    txt_at.delete(0, tk.END)
+    text_area.delete('1.0', tk.END)
+    sexo.set("")
+  
     animais = {"código": codigo, "nome": nome, "idade": idade, "sexo": sexy, "raça": raca, "peso": peso, "espécie": especie, "data de nascimento": data, "data de cadastro": cad, "data de atualização" : at, "descrição": desc}
     collection.insert_one(animais)
 

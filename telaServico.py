@@ -44,6 +44,13 @@ def create():
     tempo = txt_tempo.get()
     desc = text_area.get("1.0", END)
 
+    txt_codigo.delete(0, tk.END)
+    txt_nome.delete(0, tk.END)
+    comboservico.set("")
+    txt_valor.delete(0, tk.END)
+    txt_tempo.delete(0, tk.END)
+    text_area.delete('1.0', tk.END)
+
     servicos = {"código": codigo, "nome": nome, "serviço": tipo, "valor": valor, "tempo de duração": tempo, "descrição": desc}
     collection.insert_one(servicos)
 
