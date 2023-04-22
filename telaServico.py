@@ -87,7 +87,7 @@ txt_nome.insert(0, "Digite o nome")
 
 #Tipo de Serviço-----------------------------------------------------------------------------------------------------
 
-lbl_servico = Label(tela, text="Estado:", bg="#ffffff").place(x=130, y=200)
+lbl_servico = Label(tela, text="Tipo:", bg="#ffffff").place(x=130, y=200)
 comboservico = ttk.Combobox(tela, 
                             values=[
                                     "Serviços Estéticos", 
