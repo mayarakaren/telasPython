@@ -47,7 +47,7 @@ txt_nome.insert(0, "Digite o nome")
 lbl_idade = Label(tela, text="Idade:", bg="#ffffff").place(x=480, y=170)
 txt_idade = Entry(tela, width=20, borderwidth=2, fg="black", bg="white")
 txt_idade.place(x=520, y=170)
-txt_idade.insert(0, "Idade")
+txt_idade.insert(0, "")
 
 #Sexo-----------------------------------------------------------------------------------------------------
 Label(tela, text="Sexo:", bg="#ffffff").place(x=130, y=200)

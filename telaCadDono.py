@@ -72,7 +72,7 @@ rdb_buttonf.place(x=200 , y=200)
 lbl_idade = Label(tela, text="Idade:", bg="#ffffff").place(x=250, y=200)
 txt_idade = Entry(tela, width=20, borderwidth=2, fg="black", bg="white")
 txt_idade.place(x=290, y=200)
-txt_idade.insert(0, " ")
+txt_idade.insert(0, "")
 
 #Endereço-----------------------------------------------------------------------------------------------------
 
