@@ -29,7 +29,7 @@ tela.geometry("%dx%d+%d+%d"%(largura, altura, posx, posy))
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client['petshop']
-collection = db['servico']
+collection = db['servicos']
 data = collection.find()
 
 def consultar_servico():
