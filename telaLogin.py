@@ -2,6 +2,7 @@ from tkinter import *
 import tkinter as tk
 import bcrypt
 from tkinter import messagebox
+import subprocess
 
 tela = Tk()
 tela.title("Petz")
@@ -37,7 +38,7 @@ txt_user = Entry(tela)
 txt_user.place(x=60, y=10)
 txt_user.insert(0, "")
 
-lbl_password = Label(tela, text="Usuário:", bg="#ffffff").place(x=10, y=40)
+lbl_password = Label(tela, text="Senha:", bg="#ffffff").place(x=10, y=40)
 txt_password = Entry(tela)
 txt_password = tk.Entry(tela, show="*")
 txt_password.place(x=60, y=40)
@@ -54,22 +55,30 @@ def cadastro():
     collection.insert_one(usuarios)
 
     messagebox.showinfo('Cadastro','Cadastro bem-sucedido')
+    tela.destroy()
+
+def abrir_tela_principal():
+    subprocess.run(["python", "telaPrincipal.py"])
 
 def login():
     username = txt_user.get()
     password = txt_password.get().encode('utf-8')
 
     colecao_user = db['usuarios']
-    usuario_encontrado = colecao_user.find_one({"usuario": username})
+    usuario_encontrado = colecao_user.find_one({"usuário": username})
 
     if usuario_encontrado:
-        hash_senha = usuario_encontrado['password'] == password
+        hash_senha = usuario_encontrado['senha']
         if bcrypt.checkpw(password, hash_senha):
             messagebox.showinfo('Login','Login bem-sucedido')
+            tela.destroy() # Fecha a tela de login
+            abrir_tela_principal() # Abre a outra tela da aplicação
         else:
             messagebox.showinfo('Login','Login ou Senha incorreta')
+            tela.destroy()
     else:
         messagebox.showinfo('Login', 'Usuário não encontrado!')
+        tela.destroy()
 
 login_button = Button(tela, text="Login", bg="#90EE90")
 login_button.place(x=180, y=80)
