@@ -34,13 +34,13 @@ collection = db['usuarios']
 
 
 lbl_user = Label(tela, text="Usuário:", bg="#ffffff").place(x=10, y=10)
-txt_user = Entry(tela)
+txt_user = Entry(tela, width=35, borderwidth=3)
 txt_user.place(x=60, y=10)
 txt_user.insert(0, "")
 
 lbl_password = Label(tela, text="Senha:", bg="#ffffff").place(x=10, y=40)
 txt_password = Entry(tela)
-txt_password = tk.Entry(tela, show="*")
+txt_password = tk.Entry(tela, show="*", width=35, borderwidth=3)
 txt_password.place(x=60, y=40)
 txt_password.insert(0, "")
 
@@ -80,11 +80,11 @@ def login():
         messagebox.showinfo('Login', 'Usuário não encontrado!')
         tela.destroy()
 
-login_button = Button(tela, text="Login", bg="#90EE90")
+login_button = Button(tela, text="Login", bg="#6495ED")
 login_button.place(x=180, y=80)
 login_button.config(command=login)
 
-cad_button = Button(tela, text="Cadastrar", bg="#90EE90")
+cad_button = Button(tela, text="Cadastrar", bg="#6495ED")
 cad_button.place(x=80, y=80)
 cad_button.config(command=cadastro)
 
